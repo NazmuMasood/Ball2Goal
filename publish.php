@@ -28,6 +28,6 @@ if (isset($_SESSION['username'])) {
 }
 else{
 	$_SESSION['help_guest_publish'] = 1;
-	header('location: login_updt.php');
+	header('location: register_updt.php');
 }
 ?>
