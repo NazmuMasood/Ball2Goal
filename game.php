@@ -57,11 +57,29 @@ if (isset($_GET['logout'])) {
 			visibility: block;
 			background-color: white;
 		}
+
+		#startMessage{
+			visibility: block; 
+			display:inline-block;
+			text-align:center;
+			overflow:hidden;
+			position: relative;
+			top: 50%; 
+			-webkit-transform: translateY(-50%);
+			transform: translateY(-50%);
+			z-index: 999;
+			left:50%;
+			-webkit-transform: translateX(-50%);
+			transform: translateX(-50%);
+			width:65%;
+			background-color: yellow;
+		}
 	</style>
 	<audio id="myAudio">
 		<source src="js_doodling/chicken.mp3" type="audio/mp3">
 		Your browser does not support the audio element.
 	</audio>
+	<script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 </head>
 
 <body>
@@ -100,15 +118,37 @@ if (isset($_GET['logout'])) {
 		</div>
 		<div style="clear: right;"></div>
 		<!-- see leaderboard button div ends-->
-		<div id="letsHideAll" style="visibility: block;">
+		<div id="letsHideAll" style="visibility: block; max-width:500px;">
 			<div id="hideObstacle" style="float: left;"></div>
 			<div id="container" style="float: left;">
+				<div id="startMessage">
+					<strong> 
+					 Rush the 
+					<span style="color:red;" class="iconify" data-icon="ion:bowling-ball" data-inline="false"></span> 
+					to victory
+					<span style="color:blue;" class="iconify" data-icon="emojione-monotone:flag-for-black-flag" data-inline="false"></span>! 
+					Press any 
+					<span class="iconify" data-icon="emojione:key" data-inline="false"></span>
+					to start...  
+					 </strong>
+				</div>
 				<div id="box"></div>
 				<div id="flag" style="float: right;width: 8px;margin-top: 100px;margin-right: 16px;height: 300px;background-color: indigo;"></div>
 				<div id="flag-stand" style="float: right;width: 80px;height: 60px;background-color: #87ceeb;margin-top: 105px;border-radius: 50px 0px 30px 5px;outline: #87ceeb; "></div>
 				<div id="obstacle" style="z-index: 0;"></div>
 			</div>
 			<div id="hideObstacle" style="float: left;left:52px;"></div>
+			<div id="playInstructions" 
+				style="display: inline-block;vertical-align:bottom;visibility: block; margin-top:30px;"
+			>
+				<span style="height:2em; padding-bottom:4px;" class="iconify" data-icon="logos:todomvc" data-inline="false"></span>
+				Press "
+				<span class="iconify" data-icon="zmdi-space-bar" data-inline="false"></span>
+				" to jump, Press " 
+				<span class="iconify" data-icon="ic:round-keyboard-backspace" data-inline="false"></span>
+				<span class="iconify" data-icon="ic:round-keyboard-backspace" data-inline="false" data-flip="horizontal"></span>
+				" to move backward and forward
+			</div>
 		</div>
 		<div id="winnerMessage" style="display: none;margin-top: 110px;">
 			<img src="js_doodling/wwcd.jpg" style="margin-top: 40px;">
@@ -116,19 +156,22 @@ if (isset($_GET['logout'])) {
 			<button type="button" class="btn btn-primary btn-lg" style="float: left;margin-top: 68px;margin-left: 60px;padding: 30px;padding-right: 120px;padding-left: 120px;" onclick="location.href='see_score.php'">
 				<span style="font-size:30px;">View My Score!</span>
 			</button>
-			<button type="button" class="btn btn-primary btn-lg" style="float: right;margin-top: 30px;margin-right: 85px;padding: 30px;padding-right: 150px;padding-left: 150px;" onclick="location.href='game.php'">
+			<button type="button" class="btn btn-primary btn-lg" style="float: right;margin-top: 30px;margin-right: 85px;padding: 30px;padding-right: 150px;padding-left: 150px;" 
+			onclick="reRun()">
 				<span style="font-size:30px;">Play Again!</span>
 			</button>
 		</div>
 		<div id="loserMessage" style="display: none;margin-top: 10px;">
 			<img src="js_doodling/gameOver.jpg" style="margin-top: 40px;">
-			<button type="button" class="btn btn-primary btn-lg" style="float: right;margin-top: 194px;margin-right: 80px;padding: 113px;" onclick="location.href='game.php'">
+			<button type="button" class="btn btn-primary btn-lg" style="float: right;margin-top: 194px;margin-right: 80px;padding: 113px;" 
+			onclick="reRun()">
 				<span style="font-size:30px;">Play Again!</span>
 			</button>
 		</div>
 		<div id="timeOut" style="display: none;margin-top: 100px;margin-left: 170px;">
 			<img src="js_doodling/timeOut.jpg" style="margin-left: 250px;">
-			<button type="button" class="btn btn-primary btn-lg" style="float: right;margin-top: 30px;margin-right: 50px;padding: 30px;padding-right: 450px;padding-left: 450px;" onclick="location.href='game.php'">
+			<button type="button" class="btn btn-primary btn-lg" style="float: right;margin-top: 30px;margin-right: 50px;padding: 30px;padding-right: 450px;padding-left: 450px;"
+			 onclick="reRun()">
 				<span style="font-size:30px;">Play Again!</span>
 			</button>
 		</div>
@@ -141,30 +184,41 @@ if (isset($_GET['logout'])) {
 </body>
 
 <script type="text/javascript">
-	function delete_cookie(name) {
-		document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-	}
-	delete_cookie("timeTaken");
-	delete_cookie("jumpCount");
-
 	var container = document.getElementById('container');
 	var box = document.getElementById('box');
 	var obstacle = document.getElementById('obstacle');
 	var hideObstacle = document.getElementById('hideObstacle');
 	var hiddenTimeInput = document.getElementById("timeTaken");
 	var hiddenJumpInput = document.getElementById("jumpCount");
-	var boxLeft = 80;
-	var boxTop = 375;
-	var obsLeft = 610;
-	var winnerCheck = 0;
-	var winnerTimeTaken = 0;
-	var winnerJumpCount = 0;
-	var loserCheck = 0;
 	var sound = document.getElementById("myAudio");
-	var gTime = 200;
-
+	var boxLeft;
+	var boxTop;
+	var obsLef;
+	var winnerCheck;
+	var winnerTimeTaken;
+	var winnerJumpCount;
+	var loserCheck;
+	var gTime;
 	//calculates time_taken to complete the game
 	var startTime, endTime;
+	//All setTimeout timers
+	var gameTimer, obstackleMovingTimer,ballGoUpTimer, ballGoDownTimer;
+	var noUserInteraction = true;
+
+	function setupVars(){
+		boxLeft = 80;
+		boxTop = 375;
+		obsLeft = 610;
+		winnerCheck = 0;
+		winnerTimeTaken = 0;
+		winnerJumpCount = 0;
+		loserCheck = 0;
+		gTime = 200;
+	}
+	
+	function delete_cookie(name) {
+		document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	}
 
 	function timeStart() {
 		startTime = new Date();
@@ -181,7 +235,6 @@ if (isset($_GET['logout'])) {
 		var seconds = timeDiff;
 		winnerTimeTaken = seconds;
 	}
-	obstacle.addEventListener("load", timeStart());
 
 	//function for the moving obstacle
 	function movingObstacle() {
@@ -197,10 +250,10 @@ if (isset($_GET['logout'])) {
 		var time = gTime;
 		for (var i = 1; i <= distance; i++) {
 			if (i == 1) {
-				setTimeout(goLeftObstacle, time);
+				obstackleMovingTimer = setTimeout(goLeftObstacle, time);
 			} else {
 				time = time + timeSlot;
-				setTimeout(goLeftObstacle, time);
+				obstackleMovingTimer = setTimeout(goLeftObstacle, time);
 			}
 		}
 		gTime = time;
@@ -235,43 +288,51 @@ if (isset($_GET['logout'])) {
 	function run() {
 		movingObstacle();
 	}
+	
+	function callRun(){
+		//Moving the obstacle towards our ball
+		for (i = 0; i < 30; i++) {
+			run();
+		}
+	}
 
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
-	run();
+	// function setupView(){
+	// 	document.getElementById("timeOut").style.display = "none";
+	// 	document.getElementById("winnerMessage").style.display = "none";
+	// 	document.getElementById("loserMessage").style.display = "none";
+	// 	document.getElementById("letsHideAll").style.display = "block";
+	// }
+
+	function init(){
+		delete_cookie("timeTaken"); delete_cookie("jumpCount");
+		setupVars();
+		timeStart(); callTheEndTheGame();
+		callRun();
+	}
+	// init();
+
+	function reRun(){
+		document.location.reload(false);
+		// delete_cookie("timeTaken"); delete_cookie("jumpCount");
+		// clearTimeout(gameTimer); clearTimeout(obstackleMovingTimer);
+		// clearTimeout(ballGoUpTimer); clearTimeout(ballGoDownTimer);
+		// setupView();
+		// noUserInteraction = true;
+
+		// setupVars();
+		// timeStart(); callTheEndTheGame();
+		// callRun();
+	}
+
 	//calling the endTheGame() on page load
-	obstacle.addEventListener("load", callTheEndTheGame());
+	// obstacle.addEventListener("load", callTheEndTheGame());
+	// document.addEventListener("DOMContentLoaded", function() {
+  	// 	callTheEndTheGame();
+	// });
+
 	//check for time-out
 	function callTheEndTheGame() {
-		setTimeout(endTheGame, 15000);
+		gameTimer = setTimeout(endTheGame, 15000);
 	}
 	//end the game when time exceeds 60 seconds
 	function endTheGame() {
@@ -286,6 +347,14 @@ if (isset($_GET['logout'])) {
 
 	//main function for ball movement
 	function anime(k) {
+		if(noUserInteraction){
+			if( document.readyState === 'complete'){ 
+				noUserInteraction = false; 
+				document.getElementById("startMessage").style.display = "none";
+				init(); return; 
+			}
+			else{return;}
+		}
 		window.winnerCheck;
 		//right arrow
 		if (k.keyCode == 39) {
@@ -353,14 +422,14 @@ if (isset($_GET['logout'])) {
 			var time1 = 0;
 			for (var i = 1; i <= height; i++) {
 				time1 = time1 + timeSlot;
-				setTimeout(goUp, time1);
+				ballGoUpTimer = setTimeout(goUp, time1);
 			}
 			//goDown() execution after finishing goUp 
 			var time2 = time1;
 			for (var i = 1; i <= height; i++) {
 				//ball comes down 10% faster than going-up
 				time2 = time2 + (timeSlot * 0.90);
-				setTimeout(goDown, time2);
+				ballGoDownTimer = setTimeout(goDown, time2);
 			}
 		}
 	}
