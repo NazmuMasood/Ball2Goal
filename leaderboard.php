@@ -76,9 +76,9 @@ $result = mysqli_query($db, $query);
     <!-- login button div ends -->
     <table align="center" class="table" style="width:70%; line-height:45px;margin-top: 40px;">
       <tr>
-        <th colspan="4">
-          <h2>Leaderboard</h2>
-        </th>
+        <th style="text-align: center;" colspan="4">
+					<h2>*** Leaderboard ***</h2>
+				</th>
       </tr>
       <tr align="center">
         <t>
@@ -104,10 +104,5 @@ $result = mysqli_query($db, $query);
     </table>
     <br>
     <button type="button" class="btn btn-primary btn-lg" onclick="location.href='game.php'" style="margin-left: 167px;">Play Again!</button>
-    <div style="position: absolute;bottom: 10px;
-						display:block;text-align: center;width: 100%;left: 0;">
-      Made with <span style="color: #e25555;">&#9829;</span> by
-      <a href="https://github.com/NazmuMasood" target="_blank">NazmuMasood</a>
-    </div>
   </div>
 </body>

@@ -221,8 +221,8 @@ $leaderboard = mysqli_query($db, $query);
 		<!-- leaderboard div -->
 		<table class="table" style="width:70%; line-height:45px;margin-top: 40px;">
 			<tr>
-				<th colspan="4">
-					<h2>Leaderboard</h2>
+				<th style="text-align: center;" colspan="4">
+					<h2>*** Leaderboard ***</h2>
 				</th>
 			</tr>
 			<tr align="center">
@@ -248,10 +248,5 @@ $leaderboard = mysqli_query($db, $query);
 			?>
 		</table>
 		<!-- leaderboard div ends-->
-		<div style="position: absolute;bottom: 10px;
-						display:block;text-align: center;width: 100%;left: 0;">
-			Made with <span style="color: #e25555;">&#9829;</span> by
-			<a href="https://github.com/NazmuMasood" target="_blank">NazmuMasood</a>
-		</div>
 	</div>
 </body>
