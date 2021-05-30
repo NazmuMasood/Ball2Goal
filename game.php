@@ -139,9 +139,9 @@ if (isset($_GET['logout'])) {
 			</div>
 			<div id="hideObstacle" style="float: left;left:52px;"></div>
 			<div id="playInstructions" 
-				style="display: inline-block;vertical-align:bottom;visibility: block; margin-top:30px;"
+				style="width:600px;display: inline-block;vertical-align:bottom;visibility: block; margin-top:60px;"
 			>
-				<span style="height:2em; padding-bottom:4px;" class="iconify" data-icon="logos:todomvc" data-inline="false"></span>
+				<span class="iconify" data-icon="emojione-v1:wired-keyboard" data-inline="false" style="margin-bottom: 8px;margin-right:7px;height:4em;width:4em;"></span>
 				Press "
 				<span class="iconify" data-icon="zmdi-space-bar" data-inline="false"></span>
 				" to jump, Press " 
